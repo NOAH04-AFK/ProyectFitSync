@@ -326,6 +326,12 @@
                       <text value=" Inactivar Registro Seleccionado"/>
                     </properties>
                   </component>
+                  <component id="17bff" class="javax.swing.JButton" binding="btnEditar">
+                    <constraints/>
+                    <properties>
+                      <text value="Editar Registo"/>
+                    </properties>
+                  </component>
                 </children>
               </grid>
             </children>

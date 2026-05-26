@@ -135,22 +135,40 @@ public class GestorEvolucionFisica {
      * UPDATE – Actualizar estado antropométrico en un registro existente.
      */
     public boolean actualizarRegistro(String idSocio, String idRegistro,
-                                      double nuevoPeso, double nuevoPorcentajeGrasa,
+                                      double nuevoPeso, double nuevaEstatura, double nuevoPorcentajeGrasa,
                                       double nuevaCintura, double nuevaCadera,
                                       String nuevasObs, String nuevasLesiones) {
+
         Socio socio = directorioSocios.get(idSocio);
-        if (socio == null) return false;
+        if (socio == null) {
+            System.out.println("ERROR: Socio nulo para ID: " + idSocio);
+            return false;
+        }
+
+        // LISTAR TODO LO QUE TIENE EL SOCIO
+        System.out.println("🔍 BUSCANDO REGISTRO: [" + idRegistro + "] en el historial del socio.");
+
         for (RegistroFisico r : socio.getHistorialFisico()) {
-            if (r.getIdRegistro().equals(idRegistro) && r.isActivo()) {
+            System.out.println("   ? Comparando con registro en memoria: [" + r.getIdRegistro() + "]");
+
+            // FORZAMOS LA IGUALDAD (quitando espacios y ignorando mayúsculas)
+            if (r.getIdRegistro().trim().equalsIgnoreCase(idRegistro.trim())) {
+
+                // ¡LO ENCONTRAMOS!
                 r.setPeso(nuevoPeso);
+                r.setEstatura(nuevaEstatura);
                 r.setPorcentajeGrasa(nuevoPorcentajeGrasa);
                 r.setCircunferenciaCintura(nuevaCintura);
                 r.setCircunferenciaCadera(nuevaCadera);
                 r.setObservaciones(nuevasObs);
                 r.setLesiones(nuevasLesiones);
+
+                System.out.println("¡ÉXITO! Registro actualizado correctamente.");
                 return true;
             }
         }
+
+        System.out.println("ERROR: No se encontró un ID que coincida exactamente con [" + idRegistro + "]");
         return false;
     }
 

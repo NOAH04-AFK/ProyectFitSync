@@ -37,9 +37,12 @@ public class PanelCondicionFisica {
     private JButton btnRegistrarSocio;
     private JComboBox<Socio> cmbSocioHistorial;
     private JButton btnRefrescarHistorial;
+    private JButton btnEditar;
 
     private GestorEvolucionFisica gestor;
     private DefaultTableModel modeloTabla;
+    private String idRegistroEnEdicion = null;
+    private String idSocioEnEdicion = null;
 
     public PanelCondicionFisica() {
         gestor = new GestorEvolucionFisica();
@@ -100,9 +103,10 @@ public class PanelCondicionFisica {
             public void actionPerformed(ActionEvent e) {
                 Socio socio = (Socio) cmbSocio.getSelectedItem();
                 if (socio == null) {
-                    JOptionPane.showMessageDialog(panel, "Seleccione un socio.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(panel, "Seleccione un socio para guardar la evaluación.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+
                 try {
                     double peso = Double.parseDouble(txtPeso.getText().trim());
                     double estatura = Double.parseDouble(txtEstatura.getText().trim());
@@ -112,24 +116,43 @@ public class PanelCondicionFisica {
                     String obs = txtObservaciones.getText().trim();
                     String les = txtLesiones.getText().trim();
 
-                    if (estatura <= 0 || peso <= 0) throw new NumberFormatException();
-
-                    RegistroFisico nuevo = gestor.crearRegistro(socio.getIdUsuario(), peso, estatura, grasa, cintura, cadera, obs, les);
-
-                    if (nuevo != null) {
-                        lblIMC.setText(String.valueOf(nuevo.getImc()));
-                        lblClasificacion.setText("→ " + nuevo.clasificacionIMC());
-
-                        txtPeso.setText(""); txtEstatura.setText(""); txtGrasa.setText("");
-                        txtCintura.setText(""); txtCadera.setText("");
-                        txtObservaciones.setText(""); txtLesiones.setText("");
-
-                        JOptionPane.showMessageDialog(panel, "Evaluación guardada con éxito.\nIMC: " + nuevo.getImc(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(panel, "No se pudo guardar. El socio está inactivo.", "Error", JOptionPane.ERROR_MESSAGE);
+                    if (peso <= 0 || estatura <= 0) {
+                        JOptionPane.showMessageDialog(panel, "El peso y la estatura deben ser mayores a cero.", "Error", JOptionPane.WARNING_MESSAGE);
+                        return;
                     }
+                    if (idRegistroEnEdicion == null) {
+                        RegistroFisico nuevo = gestor.crearRegistro(socio.getIdUsuario(), peso, estatura, grasa, cintura, cadera, obs, les);
+                        if (nuevo != null) {
+                            JOptionPane.showMessageDialog(panel, "Evaluación guardada exitosamente.\nIMC: " + nuevo.getImc(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(panel, "No se pudo guardar. El socio podría estar inactivo.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        // MODO ACTUALIZACIÓN
+                        boolean ok = gestor.actualizarRegistro(idSocioEnEdicion, idRegistroEnEdicion,
+                                peso, estatura, grasa, cintura, cadera, obs, les);
+                        if (ok) {
+                            JOptionPane.showMessageDialog(panel, "Registro actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                            // Resetear el modo edición
+                            idRegistroEnEdicion = null;
+                            btnGuardarEval.setText("Guardar Evaluación");
+                        } else {
+                            JOptionPane.showMessageDialog(panel, "Error al actualizar el registro.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+
+                    // 3. Limpieza de interfaz y refresco de datos
+                    txtPeso.setText(""); txtEstatura.setText(""); txtGrasa.setText("");
+                    txtCintura.setText(""); txtCadera.setText("");
+                    txtObservaciones.setText(""); txtLesiones.setText("");
+                    lblIMC.setText("--");
+                    lblClasificacion.setText("");
+
+                    // Refresca la tabla en la pestaña Historial automáticamente
+                    btnRefrescarHistorial.doClick();
+
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(panel, "Ingrese valores numéricos válidos en las medidas.", "Error", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(panel, "Por favor, ingrese valores numéricos válidos en los campos.", "Error de entrada", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
@@ -224,7 +247,7 @@ public class PanelCondicionFisica {
                         cargarComboSocios(cmbSocioHistorial);
 
                         JOptionPane.showMessageDialog(panel,
-                                "✅ Socio registrado correctamente con ID: " + idNuevo,
+                                "Socio registrado correctamente con ID: " + idNuevo,
                                 "Registro exitoso",
                                 JOptionPane.INFORMATION_MESSAGE);
 
@@ -234,6 +257,39 @@ public class PanelCondicionFisica {
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(panel, "La edad debe ser un número entero válido.", "Error", JOptionPane.WARNING_MESSAGE);
                 }
+            }
+        });
+        btnEditar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int fila = tablaHistorial.getSelectedRow();
+                if (fila < 0) {
+                    JOptionPane.showMessageDialog(panel, "Selecciona una fila primero.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                idRegistroEnEdicion = modeloTabla.getValueAt(fila, 0).toString();
+
+                // ← GUARDAR EL SOCIO DEL HISTORIAL
+                Socio socioEditando = (Socio) cmbSocioHistorial.getSelectedItem();
+                idSocioEnEdicion = socioEditando.getIdUsuario();
+
+                // ← SINCRONIZAR cmbSocio con el mismo socio
+                for (int i = 0; i < cmbSocio.getItemCount(); i++) {
+                    if (cmbSocio.getItemAt(i).getIdUsuario().equals(idSocioEnEdicion)) {
+                        cmbSocio.setSelectedIndex(i);
+                        break;
+                    }
+                }
+
+                txtPeso.setText(modeloTabla.getValueAt(fila, 2).toString());
+                txtEstatura.setText(modeloTabla.getValueAt(fila, 3).toString());
+                txtGrasa.setText(modeloTabla.getValueAt(fila, 4).toString().replace("%", "").trim());
+                txtCintura.setText(modeloTabla.getValueAt(fila, 5).toString().replace(" cm", "").trim());
+                txtCadera.setText(modeloTabla.getValueAt(fila, 6).toString().replace(" cm", "").trim());
+
+                btnGuardarEval.setText("Actualizar Registro");
+                tabbedPane.setSelectedIndex(0);
             }
         });
     }
