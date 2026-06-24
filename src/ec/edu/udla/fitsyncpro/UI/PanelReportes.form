@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ec.edu.udla.fitsyncpro.UI.PanelReportes">
+  <grid id="root" binding="panelPrincipal" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="8" left="8" bottom="8" right="8"/>
+    <constraints><xy x="0" y="0" width="800" height="600"/></constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <tabbedpane id="tabs" binding="tabbedPane1">
+        <constraints><grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/></constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="tab1" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="5" left="5" bottom="5" right="5"/>
+            <constraints><tabbedpane title="Reporte Operativo"/></constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="b1" class="javax.swing.JButton" binding="btnGenerar">
+                <constraints><grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/></constraints>
+                <properties><text value="Generar reporte operativo consolidado"/></properties>
+              </component>
+              <splitpane id="sp_rep">
+                <constraints><grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/></constraints>
+                <properties><orientation value="1"/></properties>
+                <border type="none"/>
+                <children>
+                  <scrollpane id="sc1"><constraints><splitpane position="left"/></constraints><properties/><border type="none"/><children>
+                    <component id="ta1" class="javax.swing.JTextArea" binding="txtReporte"><constraints/><properties/></component>
+                  </children></scrollpane>
+                  <scrollpane id="sc2"><constraints><splitpane position="right"/></constraints><properties/><border type="line" title="Historial"/><children>
+                    <component id="jl1" class="javax.swing.JList" binding="listaHistorial"><constraints/><properties/></component>
+                  </children></scrollpane>
+                </children>
+              </splitpane>
+            </children>
+          </grid>
+          <grid id="tab2" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="5" left="5" bottom="5" right="5"/>
+            <constraints><tabbedpane title="Indicadores de Retención"/></constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="b2" class="javax.swing.JButton" binding="btnCalcular">
+                <constraints><grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/></constraints>
+                <properties><text value="Calcular indicadores de retención"/></properties>
+              </component>
+              <scrollpane id="sc3"><constraints><grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/></constraints><properties/><border type="none"/><children>
+                <component id="ta2" class="javax.swing.JTextArea" binding="txtRetencion"><constraints/><properties/></component>
+              </children></scrollpane>
+            </children>
+          </grid>
+          <grid id="tab3" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="5" left="5" bottom="5" right="5"/>
+            <constraints><tabbedpane title="Plantillas"/></constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="sc4"><constraints><grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/></constraints><properties/><border type="none"/><children>
+                <component id="jl2" class="javax.swing.JList" binding="listaPlantillas"><constraints/><properties/></component>
+              </children></scrollpane>
+              <grid id="bot_plan" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints><grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/></constraints>
+                <properties/><border type="none"/><children>
+                  <component id="chk1" class="javax.swing.JCheckBox" binding="chkSoloActivas"><constraints/><properties><text value="Solo activas"/></properties></component>
+                  <component id="b3" class="javax.swing.JButton" binding="btnNueva"><constraints/><properties><text value="Nueva plantilla"/></properties></component>
+                  <component id="b4" class="javax.swing.JButton" binding="btnInactivar"><constraints/><properties><text value="Inactivar seleccionada"/></properties></component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="tab4" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="5" left="5" bottom="5" right="5"/>
+            <constraints><tabbedpane title="Seguridad (RBAC)"/></constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <scrollpane id="sc5"><constraints><grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/></constraints><properties/><border type="line" title="Cuentas administrativas"/><children>
+                <component id="jl3" class="javax.swing.JList" binding="listaCuentas"><constraints/><properties/></component>
+              </children></scrollpane>
+              <grid id="bot_sec" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints><grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/></constraints>
+                <properties/><border type="line" title="Actualizar credenciales"/><children>
+                  <component id="lsec1" class="javax.swing.JLabel"><constraints/><properties><text value="Usuario:"/></properties></component>
+                  <component id="tfsec1" class="javax.swing.JTextField" binding="txtUsuario"><constraints/><properties><columns value="10"/></properties></component>
+                  <component id="lsec2" class="javax.swing.JLabel"><constraints/><properties><text value="Clave:"/></properties></component>
+                  <component id="tfsec2" class="javax.swing.JPasswordField" binding="txtClave"><constraints/><properties><columns value="10"/></properties></component>
+                  <component id="lsec3" class="javax.swing.JLabel"><constraints/><properties><text value="Nivel:"/></properties></component>
+                  <component id="cbsec1" class="javax.swing.JComboBox" binding="cmbNivel"><constraints/><properties/></component>
+                  <component id="bsec" class="javax.swing.JButton" binding="btnActualizar"><constraints/><properties><text value="Actualizar"/></properties></component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+        </children>
+      </tabbedpane>
+    </children>
+  </grid>
+</form>

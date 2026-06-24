@@ -293,7 +293,6 @@ public class PanelCondicionFisica {
             }
         });
     }
-
     // Método auxiliar para no repetir código al llenar los combos
     private void cargarComboSocios(JComboBox<Socio> combo) {
         if (combo != null && gestor != null) {
@@ -303,7 +302,6 @@ public class PanelCondicionFisica {
             }
         }
     }
-
     public static void main(String[] args) {
         JFrame frame = new JFrame("FitSync Pro - Panel de Condición Física");
         frame.setContentPane(new PanelCondicionFisica().panel);

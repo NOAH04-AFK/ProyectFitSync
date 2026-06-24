@@ -2,7 +2,8 @@ package ec.edu.udla.fitsyncpro.models;
 
 import ec.edu.udla.fitsyncpro.utils.GrupoMuscular;
 
-public class Ejercicio {
+public class Ejercicio implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
     private String idEjercicio;
     private String nombreEjercicio;
     private GrupoMuscular grupoMuscular;
@@ -15,6 +16,16 @@ public class Ejercicio {
         this.grupoMuscular = grupoMuscular;
         this.serie = serie;
         this.repeticiones = repeticiones;
+    }
+
+    /**
+     * Copia independiente de un ejercicio. Se usa al personalizar el plan de un
+     * socio, de modo que cambiar sus series o repeticiones no afecte al catálogo
+     * general ni a los planes de otros socios.
+     */
+    public Ejercicio(Ejercicio original) {
+        this(original.idEjercicio, original.nombreEjercicio, original.grupoMuscular,
+                original.serie, original.repeticiones);
     }
 
     public String getIdEjercicio() { return idEjercicio; }

@@ -208,7 +208,6 @@ public class PanelCreadorRutinas {
                 }
             }
         });
-
         cmbGrupoMuscular.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -310,12 +309,10 @@ public class PanelCreadorRutinas {
             modeloRutinaDia.addElement(new Ejercicio("LIBRE", "Día Libre — Descanso", GrupoMuscular.CARDIO, 0, 0));
         }
     }
-
     private void actualizarListaEquipos() {
         modeloEquipos.clear();
         for (Equipo eq : gestor.obtenerEquipos()) modeloEquipos.addElement(eq);
     }
-
     private void actualizarCatalogoVisual(GrupoMuscular filtro) {
         modeloCatalogo.clear();
         ArrayList<Ejercicio> lista = gestor.obtenerCatalogo(filtro);
@@ -323,7 +320,6 @@ public class PanelCreadorRutinas {
             modeloCatalogo.addElement(ej);
         }
     }
-
     public static void main(String[] args) {
         JFrame frame = new JFrame("PanelCreadorRutinas");
         frame.setContentPane(new PanelCreadorRutinas().panel);

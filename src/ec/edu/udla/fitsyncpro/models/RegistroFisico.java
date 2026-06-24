@@ -44,7 +44,7 @@ public class RegistroFisico {
     }
 
     // ════════════════════════════════════════════════════════════════════════
-    //  Método funcional: +calcularIMC()   (requerido en el documento)
+    //  Método funcional: +calcularIMC()
     // ════════════════════════════════════════════════════════════════════════
     public double calcularIMC() {
         if (estatura <= 0) return 0;
@@ -60,28 +60,106 @@ public class RegistroFisico {
     }
 
     // ── Getters ───────────────────────────────────────────────────────────────
-    public String    getIdRegistro()            { return idRegistro; }
-    public String    getIdSocio()               { return idSocio; }
-    public LocalDate getFechaEvaluacion()        { return fechaEvaluacion; }
-    public double    getPeso()                  { return peso; }
-    public double    getEstatura()              { return estatura; }
-    public double    getPorcentajeGrasa()       { return porcentajeGrasa; }
-    public double    getCircunferenciaCintura() { return circunferenciaCintura; }
-    public double    getCircunferenciaCadera()  { return circunferenciaCadera; }
-    public String    getObservaciones()         { return observaciones; }
-    public String    getLesiones()              { return lesiones; }
-    public boolean   isActivo()                 { return activo; }
-    public double    getImc()                   { return imc; }
+
+
+    public String getIdRegistro() {
+        return idRegistro;
+    }
+
+    public String getIdSocio() {
+        return idSocio;
+    }
+
+    public LocalDate getFechaEvaluacion() {
+        return fechaEvaluacion;
+    }
+
+    public double getPeso() {
+        return peso;
+    }
+
+    public double getEstatura() {
+        return estatura;
+    }
+
+    public double getPorcentajeGrasa() {
+        return porcentajeGrasa;
+    }
+
+    public double getCircunferenciaCintura() {
+        return circunferenciaCintura;
+    }
+
+    public double getCircunferenciaCadera() {
+        return circunferenciaCadera;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public String getLesiones() {
+        return lesiones;
+    }
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public double getImc() {
+        return imc;
+    }
 
     // ── Setters (Update) ──────────────────────────────────────────────────────
-    public void setPeso(double peso)               { this.peso = peso;   this.imc = calcularIMC(); }
-    public void setEstatura(double estatura)       { this.estatura = estatura; this.imc = calcularIMC(); }
-    public void setPorcentajeGrasa(double pg)      { this.porcentajeGrasa = pg; }
-    public void setCircunferenciaCintura(double c) { this.circunferenciaCintura = c; }
-    public void setCircunferenciaCadera(double c)  { this.circunferenciaCadera = c; }
-    public void setObservaciones(String o)         { this.observaciones = o; }
-    public void setLesiones(String l)              { this.lesiones = l; }
-    public void setActivo(boolean activo)          { this.activo = activo; }
+
+
+    public void setIdRegistro(String idRegistro) {
+        this.idRegistro = idRegistro;
+    }
+
+    public void setIdSocio(String idSocio) {
+        this.idSocio = idSocio;
+    }
+
+    public void setFechaEvaluacion(LocalDate fechaEvaluacion) {
+        this.fechaEvaluacion = fechaEvaluacion;
+    }
+
+    public void setPeso(double peso) {
+        this.peso = peso;
+    }
+
+    public void setEstatura(double estatura) {
+        this.estatura = estatura;
+    }
+
+    public void setPorcentajeGrasa(double porcentajeGrasa) {
+        this.porcentajeGrasa = porcentajeGrasa;
+    }
+
+    public void setCircunferenciaCintura(double circunferenciaCintura) {
+        this.circunferenciaCintura = circunferenciaCintura;
+    }
+
+    public void setCircunferenciaCadera(double circunferenciaCadera) {
+        this.circunferenciaCadera = circunferenciaCadera;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public void setLesiones(String lesiones) {
+        this.lesiones = lesiones;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
+    public void setImc(double imc) {
+        this.imc = imc;
+    }
 
     @Override
     public String toString() {

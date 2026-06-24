@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ec.edu.udla.fitsyncpro.UI.PanelAsignacionRutinas">
+  <grid id="root" binding="panelPrincipal" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="8" left="8" bottom="8" right="8"/>
+    <constraints>
+      <xy x="0" y="0" width="900" height="700"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="top_panel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="line" title="Asignar rutina del día al plan del socio (PlanificacionDiaria)"/>
+        <children>
+          <component id="lbl1" class="javax.swing.JLabel">
+            <constraints/>
+            <properties>
+              <text value="Socio:"/>
+            </properties>
+          </component>
+          <component id="cmb1" class="javax.swing.JComboBox" binding="cmbSocio">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="lbl2" class="javax.swing.JLabel">
+            <constraints/>
+            <properties>
+              <text value="Día:"/>
+            </properties>
+          </component>
+          <component id="cmb2" class="javax.swing.JComboBox" binding="cmbDia">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="btn1" class="javax.swing.JButton" binding="btnAsignarSocio">
+            <constraints/>
+            <properties>
+              <text value="Asignar al socio"/>
+            </properties>
+          </component>
+          <component id="btn2" class="javax.swing.JButton" binding="btnAsignarSemana">
+            <constraints/>
+            <properties>
+              <text value="Asignar semana completa"/>
+            </properties>
+          </component>
+          <component id="lbl3" class="javax.swing.JLabel" binding="lblDisponible">
+            <constraints/>
+            <properties>
+              <text value="Disponible: "/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <scrollpane id="sp_table">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="line" title="Plan semanal del socio seleccionado"/>
+        <children>
+          <component id="tbl1" class="javax.swing.JTable" binding="tablaPlanSemanal">
+            <constraints/>
+            <properties/>
+          </component>
+        </children>
+      </scrollpane>
+      <grid id="bot_panel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="5" left="5" bottom="5" right="5"/>
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="line" title="Personalizar el día seleccionado (rutina propia del socio — no afecta a otros)"/>
+        <children>
+          <scrollpane id="sp_list">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="lst1" class="javax.swing.JList" binding="listaRutinaPersonalizada">
+                <constraints/>
+                <properties>
+                  <model/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+          <grid id="bot_controls" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+            <constraints>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="lbl4" class="javax.swing.JLabel">
+                <constraints/>
+                <properties>
+                  <text value="Catálogo:"/>
+                </properties>
+              </component>
+              <component id="cmb3" class="javax.swing.JComboBox" binding="cmbCatalogo">
+                <constraints/>
+                <properties/>
+              </component>
+              <component id="btn3" class="javax.swing.JButton" binding="btnAgregarEjercicio">
+                <constraints/>
+                <properties>
+                  <text value="Agregar ejercicio"/>
+                </properties>
+              </component>
+              <component id="btn4" class="javax.swing.JButton" binding="btnQuitarEjercicio">
+                <constraints/>
+                <properties>
+                  <text value="Quitar ejercicio seleccionado"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="footer_panel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="btn5" class="javax.swing.JButton" binding="btnQuitarAsignacion">
+            <constraints/>
+            <properties>
+              <text value="Quitar asignación del día seleccionado"/>
+            </properties>
+          </component>
+          <component id="btn6" class="javax.swing.JButton" binding="btnRefrescar">
+            <constraints/>
+            <properties>
+              <text value="Refrescar"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="ec.edu.udla.fitsyncpro.UI.PanelGestionSocios">
+  <grid id="root" binding="panelPrincipal" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="8" left="8" bottom="8" right="8"/>
+    <constraints><xy x="0" y="0" width="900" height="700"/></constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <tabbedpane id="tabs" binding="tabbedPane1">
+        <constraints><grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/></constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <grid id="tab_soc" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="5" left="5" bottom="5" right="5"/>
+            <constraints><tabbedpane title="Socios"/></constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="form_soc" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints><grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/></constraints>
+                <properties/><border type="line" title="Registrar nuevo socio"/><children>
+                  <component id="ls1" class="javax.swing.JLabel"><constraints/><properties><text value="Nombre:"/></properties></component>
+                  <component id="ts1" class="javax.swing.JTextField" binding="txtNombre"><constraints/><properties><columns value="10"/></properties></component>
+                  <component id="ls2" class="javax.swing.JLabel"><constraints/><properties><text value="Edad:"/></properties></component>
+                  <component id="ts2" class="javax.swing.JTextField" binding="txtEdad"><constraints/><properties><columns value="4"/></properties></component>
+                  <component id="ls3" class="javax.swing.JLabel"><constraints/><properties><text value="Tel:"/></properties></component>
+                  <component id="ts3" class="javax.swing.JTextField" binding="txtTelefono"><constraints/><properties><columns value="8"/></properties></component>
+                  <component id="ls4" class="javax.swing.JLabel"><constraints/><properties><text value="Membresía:"/></properties></component>
+                  <component id="cs1" class="javax.swing.JComboBox" binding="cmbMembresia"><constraints/><properties/></component>
+                  <component id="bs1" class="javax.swing.JButton" binding="btnRegistrar"><constraints/><properties><text value="Registrar"/></properties></component>
+                </children>
+              </grid>
+              <scrollpane id="spsoc"><constraints><grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/></constraints><properties/><border type="none"/><children>
+                <component id="tblsoc" class="javax.swing.JTable" binding="tablaSocios"><constraints/><properties/></component>
+              </children></scrollpane>
+              <grid id="act_soc" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints><grid row="2" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/></constraints>
+                <properties/><border type="none"/><children>
+                  <component id="ls5" class="javax.swing.JLabel"><constraints/><properties><text value="Búsqueda:"/></properties></component>
+                  <component id="ts4" class="javax.swing.JTextField" binding="txtBuscar"><constraints/><properties><columns value="10"/></properties></component>
+                  <component id="bs2" class="javax.swing.JButton" binding="btnBuscar"><constraints/><properties><text value="Buscar"/></properties></component>
+                  <component id="bs3" class="javax.swing.JButton" binding="btnTodos"><constraints/><properties><text value="Ver todos"/></properties></component>
+                  <component id="bs4" class="javax.swing.JButton" binding="btnActualizar"><constraints/><properties><text value="Actualizar seleccionado"/></properties></component>
+                  <component id="bs5" class="javax.swing.JButton" binding="btnInactivar"><constraints/><properties><text value="Inactivar seleccionado"/></properties></component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="tab_ent" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="5" left="5" bottom="5" right="5"/>
+            <constraints><tabbedpane title="Entrenadores y Asignación"/></constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="form_ent" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints><grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/></constraints>
+                <properties/><border type="line" title="Registrar entrenador"/><children>
+                  <component id="le1" class="javax.swing.JLabel"><constraints/><properties><text value="Nombre:"/></properties></component>
+                  <component id="te1" class="javax.swing.JTextField" binding="txtNombreT"><constraints/><properties><columns value="8"/></properties></component>
+                  <component id="le2" class="javax.swing.JLabel"><constraints/><properties><text value="Edad:"/></properties></component>
+                  <component id="te2" class="javax.swing.JTextField" binding="txtEdadT"><constraints/><properties><columns value="3"/></properties></component>
+                  <component id="le3" class="javax.swing.JLabel"><constraints/><properties><text value="Tel:"/></properties></component>
+                  <component id="te3" class="javax.swing.JTextField" binding="txtTelefonoT"><constraints/><properties><columns value="7"/></properties></component>
+                  <component id="le4" class="javax.swing.JLabel"><constraints/><properties><text value="Esp:"/></properties></component>
+                  <component id="te4" class="javax.swing.JTextField" binding="txtEspecialidad"><constraints/><properties><columns value="7"/></properties></component>
+                  <component id="le5" class="javax.swing.JLabel"><constraints/><properties><text value="Turno:"/></properties></component>
+                  <component id="ce1" class="javax.swing.JComboBox" binding="cmbTurno"><constraints/><properties/></component>
+                  <component id="be1" class="javax.swing.JButton" binding="btnRegistrarT"><constraints/><properties><text value="Registrar"/></properties></component>
+                </children>
+              </grid>
+              <splitpane id="sp_ent">
+                <constraints><grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/></constraints>
+                <properties><orientation value="1"/></properties>
+                <border type="none"/>
+                <children>
+                  <scrollpane id="sc_ent1"><constraints><splitpane position="left"/></constraints><properties/><border type="line" title="Entrenadores"/><children>
+                    <component id="lst_ent" class="javax.swing.JList" binding="listaEntrenadores"><constraints/><properties/></component>
+                  </children></scrollpane>
+                  <scrollpane id="sc_ent2"><constraints><splitpane position="right"/></constraints><properties/><border type="line" title="Alumnos a cargo"/><children>
+                    <component id="lst_alu" class="javax.swing.JList" binding="listaAlumnos"><constraints/><properties/></component>
+                  </children></scrollpane>
+                </children>
+              </splitpane>
+              <grid id="act_ent" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="0">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints><grid row="2" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/></constraints>
+                <properties/><border type="none"/><children>
+                  <component id="le6" class="javax.swing.JLabel"><constraints/><properties><text value="Socio:"/></properties></component>
+                  <component id="ce2" class="javax.swing.JComboBox" binding="cmbSocioAsignar"><constraints/><properties/></component>
+                  <component id="be2" class="javax.swing.JButton" binding="btnAsignar"><constraints/><properties><text value="Asignar"/></properties></component>
+                  <component id="be3" class="javax.swing.JButton" binding="btnQuitarAlumno"><constraints/><properties><text value="Quitar alumno"/></properties></component>
+                  <component id="be4" class="javax.swing.JButton" binding="btnEditarT"><constraints/><properties><text value="Actualizar entrenador"/></properties></component>
+                  <component id="be5" class="javax.swing.JButton" binding="btnInactivarT"><constraints/><properties><text value="Inactivar entrenador"/></properties></component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+        </children>
+      </tabbedpane>
+    </children>
+  </grid>
+</form>

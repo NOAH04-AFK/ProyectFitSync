@@ -30,8 +30,14 @@ public class GestorEvolucionFisica {
         cargarSociosDePrueba();
     }
 
+    /** Directorio compartido: lo usan los módulos 1, 4 y 5 a través de GestorSocios */
+    public HashMap<String, Socio> getDirectorio() {
+        return directorioSocios;
+    }
+
 
     private void cargarSociosDePrueba() {
+        if (!directorioSocios.isEmpty()) return;   // evita duplicar si el directorio es compartido
         Socio s1 = new Socio("S001", "Carlos Andrade",   28, "0991234567", TipoMembresia.MENSUAL);
         Socio s2 = new Socio("S002", "María Gómez",      35, "0987654321", TipoMembresia.ANUAL);
         Socio s3 = new Socio("S003", "Andrés Villacís",  22, "0998877665", TipoMembresia.MENSUAL);
@@ -135,40 +141,22 @@ public class GestorEvolucionFisica {
      * UPDATE – Actualizar estado antropométrico en un registro existente.
      */
     public boolean actualizarRegistro(String idSocio, String idRegistro,
-                                      double nuevoPeso, double nuevaEstatura, double nuevoPorcentajeGrasa,
+                                      double nuevoPeso, double nuevoPorcentajeGrasa,
                                       double nuevaCintura, double nuevaCadera,
                                       String nuevasObs, String nuevasLesiones) {
-
         Socio socio = directorioSocios.get(idSocio);
-        if (socio == null) {
-            System.out.println("ERROR: Socio nulo para ID: " + idSocio);
-            return false;
-        }
-
-        // LISTAR TODO LO QUE TIENE EL SOCIO
-        System.out.println("🔍 BUSCANDO REGISTRO: [" + idRegistro + "] en el historial del socio.");
-
+        if (socio == null) return false;
         for (RegistroFisico r : socio.getHistorialFisico()) {
-            System.out.println("   ? Comparando con registro en memoria: [" + r.getIdRegistro() + "]");
-
-            // FORZAMOS LA IGUALDAD (quitando espacios y ignorando mayúsculas)
-            if (r.getIdRegistro().trim().equalsIgnoreCase(idRegistro.trim())) {
-
-                // ¡LO ENCONTRAMOS!
+            if (r.getIdRegistro().equals(idRegistro) && r.isActivo()) {
                 r.setPeso(nuevoPeso);
-                r.setEstatura(nuevaEstatura);
                 r.setPorcentajeGrasa(nuevoPorcentajeGrasa);
                 r.setCircunferenciaCintura(nuevaCintura);
                 r.setCircunferenciaCadera(nuevaCadera);
                 r.setObservaciones(nuevasObs);
                 r.setLesiones(nuevasLesiones);
-
-                System.out.println("¡ÉXITO! Registro actualizado correctamente.");
                 return true;
             }
         }
-
-        System.out.println("ERROR: No se encontró un ID que coincida exactamente con [" + idRegistro + "]");
         return false;
     }
 
