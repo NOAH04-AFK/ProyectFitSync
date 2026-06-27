@@ -2,13 +2,18 @@ package ec.edu.udla.fitsyncpro.models;
 
 import ec.edu.udla.fitsyncpro.utils.GrupoMuscular;
 
-public class Ejercicio implements java.io.Serializable {
-    private static final long serialVersionUID = 1L;
-    private String idEjercicio;
-    private String nombreEjercicio;
-    private GrupoMuscular grupoMuscular;
-    private int serie;
-    private int repeticiones;
+/**
+ * EJERCICIO: un movimiento del catálogo (nombre, grupo muscular, series y reps).
+ * Los ejercicios viven en el catálogo general y también dentro de cada Rutina.
+ * Por eso existe un constructor de COPIA: al meter un ejercicio en el plan de un
+ * socio se guarda una copia, así editar sus series/reps no toca el catálogo.
+ */
+public class Ejercicio {
+    private String        idEjercicio;
+    private String        nombreEjercicio;
+    private GrupoMuscular grupoMuscular;   // PECHO, ESPALDA, PIERNAS... (enum)
+    private int           serie;           // número de series
+    private int           repeticiones;    // repeticiones por serie
 
     public Ejercicio(String idEjercicio, String nombreEjercicio, GrupoMuscular grupoMuscular, int serie, int repeticiones) {
         this.idEjercicio = idEjercicio;
@@ -19,9 +24,9 @@ public class Ejercicio implements java.io.Serializable {
     }
 
     /**
-     * Copia independiente de un ejercicio. Se usa al personalizar el plan de un
-     * socio, de modo que cambiar sus series o repeticiones no afecte al catálogo
-     * general ni a los planes de otros socios.
+     * Constructor de COPIA: crea un ejercicio independiente igual al original.
+     * Se usa al personalizar el plan de un socio, para no afectar el catálogo
+     * general ni los planes de otros socios.
      */
     public Ejercicio(Ejercicio original) {
         this(original.idEjercicio, original.nombreEjercicio, original.grupoMuscular,

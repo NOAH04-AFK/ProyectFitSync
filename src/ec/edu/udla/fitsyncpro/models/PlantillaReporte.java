@@ -5,7 +5,7 @@ package ec.edu.udla.fitsyncpro.models;
  * Admite eliminación lógica (inactivación) para conservar configuraciones
  * históricas sin que aparezcan entre las plantillas vigentes.
  */
-public class PlantillaReporte  {
+public class  PlantillaReporte  {
 
 
     private String  idPlantilla;

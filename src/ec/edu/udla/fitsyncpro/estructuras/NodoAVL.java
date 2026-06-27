@@ -6,8 +6,8 @@ import ec.edu.udla.fitsyncpro.models.Socio;
  * Nodo del Árbol AVL del ranking de constancia (Módulo 4).
  * Cada nodo guarda al socio y su puntaje de constancia (clave de ordenamiento).
  */
-public class NodoAVL implements java.io.Serializable {
-    private static final long serialVersionUID = 1L;
+public class NodoAVL {
+
     Socio   socio;
     int     puntaje;
     int     altura;

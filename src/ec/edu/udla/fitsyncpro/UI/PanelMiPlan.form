@@ -35,7 +35,17 @@
           </component>
           <component id="c2" class="javax.swing.JComboBox" binding="cmbDia">
             <constraints/>
-            <properties/>
+            <properties>
+              <model>
+                <item value="LUNES"/>
+                <item value="MARTES"/>
+                <item value="MIÉRCOLES"/>
+                <item value="JUEVES"/>
+                <item value="VIERNES"/>
+                <item value="SÁBADO"/>
+                <item value="DOMINGO"/>
+              </model>
+            </properties>
           </component>
           <component id="l3" class="javax.swing.JLabel" binding="lblResumen">
             <constraints/>

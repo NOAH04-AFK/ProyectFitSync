@@ -3,6 +3,13 @@ package ec.edu.udla.fitsyncpro.models;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * REGISTRO FISICO: una evaluacion corporal de un socio en una fecha (Modulo 3).
+ * Guarda datos antropometricos (peso, estatura, grasa, cintura, cadera) y la
+ * ficha de salud (observaciones, lesiones). El IMC se calcula AUTOMATICAMENTE
+ * en el constructor (peso / estatura al cuadrado) y se clasifica segun la OMS.
+ * Cada socio acumula sus registros en un ArrayList<RegistroFisico>.
+ */
 public class RegistroFisico {
     private String    idRegistro;
     private String    idSocio;

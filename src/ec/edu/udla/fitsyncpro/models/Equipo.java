@@ -3,18 +3,24 @@ package ec.edu.udla.fitsyncpro.models;
 import ec.edu.udla.fitsyncpro.utils.EstadoEquipo;
 import ec.edu.udla.fitsyncpro.utils.GrupoMuscular;
 
+/**
+ * EQUIPO: una máquina del gimnasio. Cada equipo es un VÉRTICE del grafo de
+ * dependencias (GrafoEquipos). Su estado (OPERATIVO / DAÑADO / MANTENIMIENTO)
+ * es clave: cuando una máquina se daña, el grafo propaga el daño en cascada
+ * (BFS) a las máquinas que dependen de ella.
+ */
 public class Equipo {
-    private String idEquipo;
-    private String nombreEquipo;
-    private GrupoMuscular grupoMuscular;
-    private EstadoEquipo estado;
-    private boolean activo;
+    private String        idEquipo;
+    private String        nombreEquipo;
+    private GrupoMuscular grupoMuscular;  // a qué grupo sirve la máquina
+    private EstadoEquipo  estado;         // OPERATIVO | DAÑADO | MANTENIMIENTO
+    private boolean       activo;         // baja lógica
 
     public Equipo(String idEquipo, String nombreEquipo, GrupoMuscular grupoMuscular) {
         this.idEquipo = idEquipo;
         this.nombreEquipo = nombreEquipo;
         this.grupoMuscular = grupoMuscular;
-        this.estado = EstadoEquipo.OPERATIVO;
+        this.estado = EstadoEquipo.OPERATIVO;   // toda máquina nueva nace operativa
         this.activo = true;
     }
 

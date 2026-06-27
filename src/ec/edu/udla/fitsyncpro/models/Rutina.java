@@ -4,6 +4,15 @@ import ec.edu.udla.fitsyncpro.utils.NivelEntrenamiento;
 
 import java.util.LinkedList;
 
+/**
+ * RUTINA: la sesión de entrenamiento de un día (objetivo, nivel y sus ejercicios).
+ * Tiene DOS usos según el atributo idSocio:
+ *   - idSocio == null  -> plantilla genérica del día (la que arma el entrenador)
+ *   - idSocio != null  -> copia PERSONALIZADA de un socio (su plan propio)
+ *
+ * Estructura: ejercicios es una LinkedList<Ejercicio>. El segundo constructor
+ * hace COPIA PROFUNDA para que el plan de cada socio sea independiente.
+ */
 public class Rutina {
     private String idRutina;
     private String objetivo;

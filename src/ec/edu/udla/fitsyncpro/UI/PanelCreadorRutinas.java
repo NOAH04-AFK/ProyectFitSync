@@ -16,6 +16,16 @@ import java.util.ArrayList; // IMPORTANTE: Para manejar las listas sin error
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Modulo 2 - Creador de Rutinas y Gestion de Equipos (interfaz, version .form).
+ * Usa GestorRutinas. Tiene tres zonas:
+ *  - Catalogo + armado: agrega ejercicios a una LinkedList temporal, deshace el
+ *    ultimo, y guarda la rutina en un dia (o solo actualiza su objetivo/nivel).
+ *  - Vista semanal: muestra la rutina de cada dia y su videotutorial.
+ *  - Gestion de Equipos (solo ADMIN): registra maquinas y sus dependencias en el
+ *    grafo, marca una como dañada y propaga el daño en cascada (BFS) a las que dependen.
+ * El metodo serGestionEquipoValidos(boolean) oculta/muestra la pestaña de equipos por rol.
+ */
 public class PanelCreadorRutinas {
     private JPanel panel;
     private JTabbedPane tabbedPane1;
@@ -52,9 +62,17 @@ public class PanelCreadorRutinas {
     private DefaultListModel<Ejercicio> modeloRutinaDia;
     private DefaultListModel<Equipo> modeloEquipos;
 
-    public PanelCreadorRutinas() {
+    private java.awt.Component tabEquiposComp;
+    private int tabEqiposIndice = -1;
+    private static final String TAB_EQUIPOS = "Gestion de Equipos";
 
-        gestor = new GestorRutinas();
+    public PanelCreadorRutinas(){
+        this(new GestorRutinas());
+    }
+
+    public PanelCreadorRutinas(GestorRutinas gestorCompartido) {
+
+        gestor = gestorCompartido;
         modeloCatalogo = new DefaultListModel<>();
         modeloRutina = new DefaultListModel<>();
         modeloRutinaDia = new DefaultListModel<>();
@@ -66,6 +84,8 @@ public class PanelCreadorRutinas {
         listaRutinaSocio.setModel(modeloRutina);
 
         btnDeshacer.setEnabled(false);
+        btnInactivarRutina.setText("Quitar ultimo");
+        btnDeshacer.setToolTipText("Quitar el ultimo ejercicio de la rutina");
 
         
         cmbNivel.removeAllItems();
@@ -139,7 +159,7 @@ public class PanelCreadorRutinas {
         btnDeshacer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Ejercicio deshecho = gestor.deshacerUltimoEjercicio();
+                Ejercicio deshecho = gestor.quitarUltimoEjercicio();
                 if (deshecho != null) {
                     modeloRutina.remove(modeloRutina.getSize()-1);
                     if (gestor.getRutinaActual().isEmpty()) {
@@ -163,6 +183,28 @@ public class PanelCreadorRutinas {
                 }
                 String dia = comboDiaGuardado.getSelectedItem().toString();
                 NivelEntrenamiento nivel = NivelEntrenamiento.valueOf(cmbNivel.getSelectedItem().toString());
+
+                // Si ya hay una rutina activa ese día, dejar elegir entre reemplazarla
+                // o solo actualizar su objetivo y nivel (UPDATE) conservando los ejercicios.
+                Rutina existente = gestor.obtenerRutinaPorDia(dia);
+                if (existente != null && existente.isActiva()) {
+                    int opt = JOptionPane.showConfirmDialog(null,
+                            "Ya existe una rutina activa para " + dia + ".\n" +
+                            "SÍ = reemplazarla con los ejercicios nuevos\n" +
+                            "NO = conservar los ejercicios y solo actualizar objetivo y nivel",
+                            "Rutina existente", JOptionPane.YES_NO_CANCEL_OPTION);
+                    if (opt == JOptionPane.CANCEL_OPTION || opt == JOptionPane.CLOSED_OPTION) return;
+                    if (opt == JOptionPane.NO_OPTION) {
+                        gestor.actualizarRutina(dia, objetivo, nivel);   // UPDATE sin tocar ejercicios
+                        gestor.limpiarRutina();                          // descarta el borrador en construcción
+                        modeloRutina.clear();
+                        btnDeshacer.setEnabled(false);
+                        txtObjetivo.setText("");
+                        JOptionPane.showMessageDialog(null, "Objetivo y nivel actualizados para " + dia + ".", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        actualizarVistaSemana();
+                        return;
+                    }
+                }
                 gestor.guardarRutinaEnDia(dia, objetivo, nivel);
                 modeloRutina.clear();
                 btnDeshacer.setEnabled(false);
@@ -254,7 +296,27 @@ public class PanelCreadorRutinas {
                 String nombre = txtNombreEquipo.getText().trim();
                 if (nombre.isEmpty()) { JOptionPane.showMessageDialog(null, "Ingrese el nombre."); return; }
                 GrupoMuscular grupo = GrupoMuscular.valueOf(cmbGrupoEquipo.getSelectedItem().toString());
-                gestor.registrarEquipo(new Equipo("EQ-" + System.currentTimeMillis(), nombre, grupo));
+                String nuevoId = "EQ-" + System.currentTimeMillis();
+                gestor.registrarEquipo(new Equipo(nuevoId, nombre, grupo));
+
+                // Declarar (opcional) una dependencia física con una máquina existente:
+                // crea una arista en el grafo dirigido de dependencias.
+                ArrayList<Equipo> otras = new ArrayList<>();
+                for (Equipo eq : gestor.obtenerEquipos()) {
+                    if (!eq.getIdEquipo().equals(nuevoId)) otras.add(eq);
+                }
+                if (!otras.isEmpty()) {
+                    Equipo origen = (Equipo) JOptionPane.showInputDialog(null,
+                            "¿\"" + nombre + "\" depende de otra máquina para funcionar?\n(Cancelar = sin dependencia)",
+                            "Dependencia física (grafo)", JOptionPane.QUESTION_MESSAGE, null,
+                            otras.toArray(), null);
+                    if (origen != null) {
+                        gestor.registrarDependencia(origen.getIdEquipo(), nuevoId);
+                        JOptionPane.showMessageDialog(null,
+                                "Dependencia registrada: \"" + nombre + "\" depende de \"" + origen.getNombreEquipo() + "\".");
+                    }
+                }
+
                 actualizarListaEquipos();
                 txtNombreEquipo.setText("");
                 JOptionPane.showMessageDialog(null, "¡Equipo registrado!");
@@ -265,9 +327,30 @@ public class PanelCreadorRutinas {
             public void actionPerformed(ActionEvent e) {
                 Equipo sel = (Equipo) listaEquipos.getSelectedValue();
                 if (sel == null) { JOptionPane.showMessageDialog(null, "Seleccione un equipo."); return; }
-                gestor.actualizarEstadoEquipo(sel.getIdEquipo(), EstadoEquipo.DAÑADO);
+
+                // Vista previa: dependientes DIRECTOS (adyacentes en el grafo) antes de aplicar la cascada
+                java.util.LinkedList<String> directos = gestor.obtenerDependientesDirectos(sel.getIdEquipo());
+                StringBuilder aviso = new StringBuilder("¿Marcar \"" + sel.getNombreEquipo() + "\" como DAÑADO?");
+                if (directos != null && !directos.isEmpty()) {
+                    aviso.append("\n\nDependen directamente de esta máquina:");
+                    for (String idDep : directos) {
+                        Equipo dep = null;
+                        for (Equipo eq : gestor.obtenerEquipos()) if (eq.getIdEquipo().equals(idDep)) { dep = eq; break; }
+                        aviso.append("\n  • ").append(dep != null ? dep.getNombreEquipo() : idDep);
+                    }
+                }
+                if (JOptionPane.showConfirmDialog(null, aviso.toString(), "Confirmar daño", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) return;
+
+                ArrayList<Equipo> afectados = gestor.reportarDanio(sel.getIdEquipo());
                 actualizarListaEquipos();
-                JOptionPane.showMessageDialog(null, "Equipo marcado como DAÑADO.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                StringBuilder msj = new StringBuilder("Equipo marcado como DANIADO");
+                if (!afectados.isEmpty()) {
+                    msj.append("\n\n Equipos dependientes eviados a MANTENIMIENTO");
+                    for (Equipo eq : afectados){
+                        msj.append("\n  • ").append(eq.getNombreEquipo());
+                    }
+                }
+                JOptionPane.showMessageDialog(null,msj.toString(), "Aviso", JOptionPane.WARNING_MESSAGE);
             }
         });
         btnMarcarOperativo.addActionListener(new ActionListener() {
@@ -292,7 +375,38 @@ public class PanelCreadorRutinas {
                 }
             }
         });
+        // RBAC: guarda la pestaña "Gestion de Equipos" para poder ocultarla según el rol
+
+        tabEqiposIndice = tabbedPane1.indexOfTab(TAB_EQUIPOS);
+        if (tabEqiposIndice != 1){
+            tabEquiposComp = tabbedPane1.getComponentAt(tabEqiposIndice);
+        }
     }
+
+    /**
+     * Control de acceso (RBAC): la gestión de equipos es administración de la
+     * infraestructura del gimnasio, por lo que solo debe estar disponible para el
+     * ADMINISTRADOR. Oculta o restaura la pestaña "Gestion de Equipos" sin destruir
+     * su contenido (es reversible al cambiar de usuario).
+     */
+
+    public void serGestionEquipoValidos(boolean visible){
+        if (tabEquiposComp == null){
+            return;
+        }
+        int idx = tabbedPane1.indexOfTab(TAB_EQUIPOS);
+        if (visible && idx == -1){
+            int pos = Math.min(tabEqiposIndice< 0 ? tabbedPane1.getTabCount():tabEqiposIndice,tabbedPane1.getTabCount());
+            tabbedPane1.insertTab(TAB_EQUIPOS,null,tabEquiposComp,"Solo administrador",pos);
+        } else if (!visible && idx == -1) {
+            tabbedPane1.removeTabAt(idx);
+
+        }
+    }
+
+
+
+
 
     private void actualizarVistaSemana() {
         modeloRutinaDia.clear();
@@ -301,7 +415,10 @@ public class PanelCreadorRutinas {
         Rutina rutina = gestor.obtenerRutinaPorDia(dia);
         if (rutina != null && rutina.isActiva()) {
             lblInfoRutina.setText("Rutina: " + rutina.getObjetivo() + " | Nivel: " + rutina.getNivel().name());
-            for (Ejercicio ej : rutina.getEjercicios()) modeloRutinaDia.addElement(ej);
+            ArrayList<Ejercicio> ejercicios = gestor.obtenerEjerciciosPorDia(dia);
+            if (ejercicios != null) {
+                for (Ejercicio ej : ejercicios) modeloRutinaDia.addElement(ej);
+            }
         } else if (rutina != null) {
             lblInfoRutina.setText("Rutina INACTIVA para este día");
         } else {
@@ -320,6 +437,13 @@ public class PanelCreadorRutinas {
             modeloCatalogo.addElement(ej);
         }
     }
+
+
+    public JPanel getPanel() {
+        return panel;
+    }
+
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("PanelCreadorRutinas");
         frame.setContentPane(new PanelCreadorRutinas().panel);

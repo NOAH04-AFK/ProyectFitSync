@@ -1,8 +1,13 @@
 package ec.edu.udla.fitsyncpro.models;
 
+/**
+ * VIDEOTUTORIAL: enlace de YouTube asociado a un ejercicio. Permite que el
+ * socio vea la técnica correcta. Se relaciona con Ejercicio por el id guardado
+ * en idEjercicioAsociado (clave del HashMap de videos en GestorRutinas).
+ */
 public class VideoTutorial {
     private String idVideo;
-    private String idEjercicioAsociado;
+    private String idEjercicioAsociado;  // id del ejercicio al que pertenece el video
     private String descripcion;
     private String urlYoutube;
 

@@ -6,7 +6,7 @@ package ec.edu.udla.fitsyncpro.models;
  * alcanza el umbral requerido (hito de desempeño).
  */
 public class Recompensa {
-    private static final long serialVersionUID = 1L;
+
 
     private String  idRecompensa;
     private String  descripcion;

@@ -29,7 +29,7 @@ public class ArbolAVL {
     //  UTILIDADES DE ALTURA Y BALANCE
     // ════════════════════════════════════════════════════════════════════
     private int altura(NodoAVL nodo) {
-        return (nodo == null) ? 0 : nodo.altura;
+        return (nodo == null) ? 0 : nodo.getAltura();
     }
 
     private int factorEquilibrio(NodoAVL nodo) {
@@ -167,6 +167,7 @@ public class ArbolAVL {
     /** Ranking DESCENDENTE (mayor puntaje primero): in-order inverso (derecha–raíz–izquierda) */
     public ArrayList<NodoAVL> obtenerRankingDescendente() {
         ArrayList<NodoAVL> ranking = new ArrayList<>();
+        if (estaVacio()) return ranking;   // árbol sin nodos → ranking vacío
         inOrdenInverso(raiz, ranking);
         return ranking;
     }

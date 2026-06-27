@@ -16,7 +16,7 @@ import java.util.LinkedList;
  *
  * Complejidad del BFS: O(V + E), donde V = vértices (equipos) y E = aristas (dependencias).
  */
-public class GrafoEquipos implements {
+public class GrafoEquipos{
 
     private HashMap<String, LinkedList<String>> listaAdyacencia;
 
