@@ -1,5 +1,6 @@
 package ec.edu.udla.fitsyncpro.UI;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import ec.edu.udla.fitsyncpro.controllers.GestorEvolucionFisica;
 import ec.edu.udla.fitsyncpro.controllers.GestorPerformance;
 import ec.edu.udla.fitsyncpro.controllers.GestorReportes;
@@ -8,6 +9,9 @@ import ec.edu.udla.fitsyncpro.controllers.GestorSocios;
 import ec.edu.udla.fitsyncpro.models.Administrador;
 import ec.edu.udla.fitsyncpro.utils.TipoUsuario;
 
+// Importaciones para el nuevo diseño moderno
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import javax.swing.UIManager;
 import javax.swing.*;
 import java.awt.*;
 
@@ -15,14 +19,13 @@ import java.awt.*;
  * Ventana principal unificada de FitSync Pro.
  *
  * Integra los módulos en pestañas y aplica control de acceso por TipoUsuario (RBAC):
- *  ─ ADMINISTRADOR : todos los módulos (requiere credenciales del Módulo 5)
- *  ─ ENTRENADOR    : socios, rutinas, asignación de planes y condición física
- *  ─ USUARIO       : su plan de entrenamiento (solo lectura)
+ * ─ ADMINISTRADOR : todos los módulos (requiere credenciales del Módulo 5)
+ * ─ ENTRENADOR    : socios, rutinas, asignación de planes y condición física
+ * ─ USUARIO       : su plan de entrenamiento (solo lectura)
  *
  * Todos los paneles comparten los MISMOS gestores, de modo que un socio
  * registrado en el Módulo 1 aparece en los módulos 2, 3, 4 y 5.
  */
-
 public class VentanaPrincipal extends JFrame {
 
     // ── Gestores compartidos ──────────────────────────────────────────────────
@@ -180,8 +183,24 @@ public class VentanaPrincipal extends JFrame {
         return rolActual;
     }
 
-    // ── Punto de entrada de la aplicación ─────────────────────────────────────
+    // ── Punto de entrada de la aplicación con Estilización Avanzada ──────────
     public static void main(String[] args) {
+        try {
+            // 1. Establecer look and feel moderno estilo macOS oscuro de FlatLaf
+            UIManager.setLookAndFeel(new FlatMacDarkLaf());
+
+            // 2. Configuración global de la UI: curvas y suavizado de bordes
+            UIManager.put("Button.arc", 12);          // Botones con esquinas redondeadas elegantes
+            UIManager.put("Component.arc", 12);       // Desplegables (ComboBox) y Spinners suavizados
+            UIManager.put("TextComponent.arc", 12);   // Campos de texto redondeados
+            UIManager.put("ScrollBar.thumbArc", 12);  // Barras de desplazamiento estilizadas
+            UIManager.put("TabbedPane.selectedBackground", new Color(41, 128, 185)); // Acento azul deportivo para la pestaña activa
+
+        } catch (Exception ex) {
+            System.err.println("No se pudo cargar el diseño moderno de FlatLaf. Se usará el aspecto nativo.");
+        }
+
+        // Ejecución de la ventana principal
         SwingUtilities.invokeLater(() -> {
             VentanaPrincipal v = new VentanaPrincipal();
             if (v.iniciarSesion()) v.setVisible(true);

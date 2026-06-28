@@ -7,6 +7,7 @@ import ec.edu.udla.fitsyncpro.utils.TipoMembresia;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -75,11 +76,41 @@ public class PanelGestionSocios {
         for (TipoMembresia m : TipoMembresia.values()) cmbMembresia.addItem(m);
         for (String t : TURNOS) cmbTurno.addItem(t);
 
+        // ════════ MEJORAS VISUALES PARA COMBINAR CON FLATLAF ════════
+        tablaSocios.setRowHeight(28);
+        tablaSocios.setShowVerticalLines(false);
+
+        btnRegistrar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnBuscar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnTodos.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnActualizar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnInactivar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnRegistrarT.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnAsignar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnQuitarAlumno.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnEditarT.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnInactivarT.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        // ════════════════════════════════════════════════════════════
+
         createListener();
         refrescarTodo();
     }
 
     private void createListener() {
+
+        // ════════════ EVENTO DE CLIC EN LA TABLA SOCIOS ════════════
+        tablaSocios.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int fila = tablaSocios.getSelectedRow();
+                if (fila != -1) {
+                    txtNombre.setText(modeloSocios.getValueAt(fila, 1).toString());
+                    txtEdad.setText(modeloSocios.getValueAt(fila, 2).toString());
+                    txtTelefono.setText(modeloSocios.getValueAt(fila, 3).toString());
+                    String memStr = modeloSocios.getValueAt(fila, 4).toString();
+                    cmbMembresia.setSelectedItem(TipoMembresia.valueOf(memStr));
+                }
+            }
+        });
 
         // ════════════ SOCIOS ════════════
         btnRegistrar.addActionListener(new ActionListener() {
@@ -120,16 +151,39 @@ public class PanelGestionSocios {
             @Override public void actionPerformed(ActionEvent e) {
                 String id = idSocioSeleccionado();
                 if (id == null) return;
-                Socio s = gestor.buscarSocioPorId(id);
-                JTextField nuevoTel = new JTextField(s.getTelefono());
-                JComboBox<TipoMembresia> nuevaMem = new JComboBox<>(TipoMembresia.values());
-                nuevaMem.setSelectedItem(s.getTipoMembresia());
-                Object[] form = {"Nuevo teléfono:", nuevoTel, "Nueva membresía:", nuevaMem};
-                int ok = JOptionPane.showConfirmDialog(panelPrincipal, form,
-                        "Actualizar " + s.getNombre(), JOptionPane.OK_CANCEL_OPTION);
-                if (ok == JOptionPane.OK_OPTION) {
-                    gestor.actualizarSocio(id, nuevoTel.getText().trim(), (TipoMembresia) nuevaMem.getSelectedItem());
-                    refrescarTablaSocios(gestor.obtenerTodosLosSocios());
+
+                try {
+                    String nuevoNombre = txtNombre.getText().trim();
+                    int nuevaEdad = Integer.parseInt(txtEdad.getText().trim());
+                    String nuevoTel = txtTelefono.getText().trim();
+                    TipoMembresia nuevaMem = (TipoMembresia) cmbMembresia.getSelectedItem();
+
+                    if (nuevoNombre.isEmpty()) {
+                        aviso("El nombre no puede estar vacío.");
+                        return;
+                    }
+
+                    Socio s = gestor.buscarSocioPorId(id);
+                    if (s != null) {
+                        s.setNombre(nuevoNombre);
+                        s.setEdad(nuevaEdad);
+                        s.setTelefono(nuevoTel);
+                        s.setTipoMembresia(nuevaMem);
+
+                        refrescarTablaSocios(gestor.obtenerTodosLosSocios());
+                        cargarCmbSocioAsignar();
+                        refrescarEntrenadores();
+
+                        txtNombre.setText("");
+                        txtEdad.setText("");
+                        txtTelefono.setText("");
+                        tablaSocios.clearSelection();
+
+                        JOptionPane.showMessageDialog(panelPrincipal, "Socio actualizado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    }
+
+                } catch (NumberFormatException ex) {
+                    aviso("Asegúrese de ingresar un número válido en la Edad.");
                 }
             }
         });
@@ -177,7 +231,6 @@ public class PanelGestionSocios {
                 Entrenador t = (Entrenador) listaEntrenadores.getSelectedValue();
                 Socio s = (Socio) cmbSocioAsignar.getSelectedItem();
                 if (t == null || s == null) { aviso("Seleccione un entrenador y un socio."); return; }
-                // Confirmar que el entrenador siga en el directorio (búsqueda O(1) por ID)
                 if (gestor.buscarEntrenadorPorId(t.getIdUsuario()) == null) {
                     aviso("El entrenador seleccionado ya no está disponible."); return;
                 }
